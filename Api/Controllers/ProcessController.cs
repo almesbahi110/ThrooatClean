@@ -2,7 +2,6 @@
 using Application.Dtos.Response;
 using Application.Interface;
 using Application.Service;
-using AutoMapper;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -13,34 +12,29 @@ namespace Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StageController : ControllerBase
+    public class ProcessController : ControllerBase
     {
-        private readonly IStage _stageService;
-       
-
+        private readonly IProcess _ProcessService;
    
-        public StageController(IStage stageService)
+        public ProcessController(IProcess ProcessService)
         {
-           this._stageService = stageService;
-          
+           this._ProcessService = ProcessService;   
           
         }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            
-           
-             var res=await    _stageService.Delete(id);
+            var res = await _ProcessService.Delete(id);
             return Ok(res);
-           
+
 
         }
 
         [HttpPost]
-        public async Task<ActionResult> PostData(StageRequstDTo data)
+        public async Task<ActionResult> PostData(ProcessRequstDTo data)
         {
-           
-            ResponeStageDto res= await _stageService.PostData(data);
+            ResponeProcessDto res = await _ProcessService.PostData(data);
             if (res.Success == true)
             {
                 return Ok(res.Massage);
@@ -56,9 +50,9 @@ namespace Api.Controllers
 
 
         [HttpPut]
-        public async Task<ActionResult> UpdateData(StageRequstDTo data)
+        public async Task<ActionResult> UpdateData(ProcessRequstDTo data)
         {
-            ResponeStageDto res = await _stageService.UpdateData(data);
+            ResponeProcessDto res = await _ProcessService.UpdateData(data);
 
             if (res.Success == true)
             {
@@ -73,20 +67,21 @@ namespace Api.Controllers
 
 
         [HttpGet]
-        public async Task<IReadOnlyList<Stage>> GetAll()
+        public async Task<IReadOnlyList<Process>> GetAll()
         {
 
 
-            var ll = await _stageService.GetAll();
+            var ll = await _ProcessService.GetAll();
 
             return ll;
         }
 
 
         [HttpGet("{id}")]
-        public Task<Stage> GetById(int id)
+        public async Task<Process> GetById(int id)
         {
-            var res = _stageService.GetStageById(id);
+            var res =await _ProcessService.GetProcessById(id);
+          
             if (res != null)
             {
                 return res;

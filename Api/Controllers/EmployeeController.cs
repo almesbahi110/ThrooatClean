@@ -2,45 +2,39 @@
 using Application.Dtos.Response;
 using Application.Interface;
 using Application.Service;
-using AutoMapper;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace Api.Controllers
+namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StageController : ControllerBase
+    public class EmployeeController : ControllerBase
     {
-        private readonly IStage _stageService;
-       
+        private readonly IEmployee _employeeService;
 
-   
-        public StageController(IStage stageService)
+        public EmployeeController(IEmployee employeeService)
         {
-           this._stageService = stageService;
-          
-          
+            _employeeService = employeeService;
         }
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            
-           
-             var res=await    _stageService.Delete(id);
+
+
+            var res = await _employeeService.Delete(id);
             return Ok(res);
-           
+
 
         }
 
         [HttpPost]
-        public async Task<ActionResult> PostData(StageRequstDTo data)
+        public async Task<ActionResult> PostData(EmployeeRequstDTo data)
         {
-           
-            ResponeStageDto res= await _stageService.PostData(data);
+            ResponeEmployeeDto res = await _employeeService.PostData(data);
             if (res.Success == true)
             {
                 return Ok(res.Massage);
@@ -56,9 +50,9 @@ namespace Api.Controllers
 
 
         [HttpPut]
-        public async Task<ActionResult> UpdateData(StageRequstDTo data)
+        public async Task<ActionResult> UpdateData(EmployeeRequstDTo data)
         {
-            ResponeStageDto res = await _stageService.UpdateData(data);
+            ResponeEmployeeDto res = await _employeeService.UpdateData(data);
 
             if (res.Success == true)
             {
@@ -70,23 +64,19 @@ namespace Api.Controllers
             }
 
         }
-
-
         [HttpGet]
-        public async Task<IReadOnlyList<Stage>> GetAll()
+        public async Task<IReadOnlyList<Employee>> GetAll()
         {
-
-
-            var ll = await _stageService.GetAll();
+         
+         
+           var ll= await _employeeService.GetAll();
 
             return ll;
         }
-
-
         [HttpGet("{id}")]
-        public Task<Stage> GetById(int id)
+        public Task<Employee> GetById(int id)
         {
-            var res = _stageService.GetStageById(id);
+            var res = _employeeService.GetEmployeeById(id);
             if (res != null)
             {
                 return res;
@@ -97,8 +87,5 @@ namespace Api.Controllers
             }
 
         }
-
     }
-       
-    }
-
+}
